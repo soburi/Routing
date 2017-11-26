@@ -2,30 +2,35 @@ Index: routing/setup.py
 ===================================================================
 --- routing.orig/setup.py
 +++ routing/setup.py
-@@ -1,22 +1,20 @@
+@@ -1,22 +1,24 @@
  from distutils.core import setup
  from distutils.extension import Extension
  from Cython.Distutils import build_ext
--
++import pkgconfig
++import re
+ 
 -import commands
 -def pkgconfig(*packages, **kw):
 -    flag_map = {'-I': 'include_dirs', '-L': 'library_dirs', '-l': 'libraries'}
 -    for token in commands.getoutput("pkg-config --libs --cflags %s" % ' '.join(packages)).split():
 -        kw.setdefault(flag_map.get(token[:2]), []).append(token[2:])
 -    return kw
-+import pkgconfig
-+import re
++incs = map(lambda x: re.sub('^-I',"",x),
++           ' '.join( [pkgconfig.cflags("libnl-3.0"),
++                      pkgconfig.cflags("libnl-cli-3.0") ]).split(' ') )
++libs = map(lambda x: re.sub('^-l',"",x),
++           ' '.join( [pkgconfig.libs("libnl-3.0"),
++                      pkgconfig.libs("libnl-cli-3.0") ]).split(' ') )
  
  ext_modules=[
-     Extension("Routing",
-               ["Routing.pyx", "NLTypes.pxd", "NLUtils.pxd"],
+-    Extension("Routing",
+-              ["Routing.pyx", "NLTypes.pxd", "NLUtils.pxd"],
 -              **pkgconfig("libnl-3.0 libnl-cli-3.0"))  # Unix-like specific
 -			      ]
-+              [re.sub(r'^-I', "", pkgconfig.cflags("libnl-3.0")),
-+               re.sub(r'^-I', "", pkgconfig.cflags("libnl-cli-3.0"))],
-+              [re.sub(r'^-l', "", pkgconfig.libs("libnl-3.0")),
-+               re.sub(r'^-l', "", pkgconfig.libs("libnl-cli-3.0"))])
-+            ]
++    Extension(name="Routing",
++              sources=["Routing.pyx", "NLTypes.pxd", "NLUtils.pxd"],
++              include_dirs=incs,
++              libraries=libs)]
  
  setup(
    name = "Routing",
