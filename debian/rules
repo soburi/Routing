@@ -7,6 +7,9 @@ export PYBUILD_NAME=routing
 %:
 	dh $@ --with python2 --buildsystem=pybuild
 
+override_dh_auto_clean:
+	dh_auto_clean
+	rm -rf Routing.c build/
 
 # If you need to rebuild the Sphinx documentation
 # Add spinxdoc to the dh --with line
