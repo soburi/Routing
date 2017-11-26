@@ -1,0 +1,29 @@
+Source: routing
+Section: python
+Priority: optional
+Maintainer: soburi <soburi@gmail.com>
+Build-Depends: debhelper (>= 9), dh-python, python-all, python-setuptools, cython, libnl-3-dev
+Standards-Version: 3.9.8
+Homepage: https://github.com/tcheneau/Routing/
+X-Python-Version: >= 2.6
+#Vcs-Git: https://anonscm.debian.org/git/python-modules/packages/routing.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/python-modules/packages/routing.git/
+#Testsuite: autopkgtest-pkg-python
+
+Package: python-routing
+Architecture: any
+Depends: ${python:Depends}, ${misc:Depends}, libnl-3, libc6
+Suggests: python-routing-doc
+Description: libnl-routing binding for python (Python 2)
+ libnl-routing binding for python
+ .
+ This package installs the library for Python 2.
+
+Package: python-routing-doc
+Architecture: all
+Section: doc
+Depends: ${sphinxdoc:Depends}, ${misc:Depends}
+Description: libnl-routing binding for python (common documentation)
+ libnl-routing binding for python
+ .
+ This is the common documentation package.
