@@ -5,7 +5,7 @@ export DH_VERBOSE = 1
 export PYBUILD_NAME=routing
 
 %:
-	dh $@ --with python2,python3 --buildsystem=pybuild
+	dh $@ --with python2 --buildsystem=pybuild
 
 
 # If you need to rebuild the Sphinx documentation
